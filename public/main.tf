@@ -18,9 +18,9 @@ resource "aws_route53_record" "NS" {
   type    = "NS"
   ttl     = "30"
   records = [
-    "${aws_route53_zone.environment.0.name_servers.0}",
-    "${aws_route53_zone.environment.0.name_servers.1}",
-    "${aws_route53_zone.environment.0.name_servers.2}",
-    "${aws_route53_zone.environment.0.name_servers.3}"]
+    "${element(aws_route53_zone.environment.*.name_servers.0,count.index)}",
+    "${element(aws_route53_zone.environment.*.name_servers.1,count.index)}",
+    "${element(aws_route53_zone.environment.*.name_servers.2,count.index)}",
+    "${element(aws_route53_zone.environment.*.name_servers.3,count.index)}"]
   count   = "${length(split(",", var.environments))}"
 }
