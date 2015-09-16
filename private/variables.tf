@@ -1,5 +1,5 @@
 variable "region" { }
 variable "domain" { }
 variable "public_zone_id" { }
-variable "environments" { default = "" }
+variable "subdomains" { default = "" }
 variable "vpc_ids" { default = "" }

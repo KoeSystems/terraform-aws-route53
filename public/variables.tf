@@ -1,2 +1,2 @@
 variable "domain" { }
-variable "environments" { default = "pre,dev" }
+variable "subdomains" { default = "pre,dev" }

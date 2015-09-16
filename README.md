@@ -14,13 +14,13 @@ Create a DNS domain in R53 as public hosted zone with serveral subdomain for eac
 ### Inputs
 
   * domain
-  * environments  default = { "pre,dev" }
+  * subdomains  default = { "pre,dev" }
   
 ### Outputs
 
   * zone_id
-  * environment_zone_ids
-  * environment_names
+  * subdomain_zone_ids
+  * subdomain_names
   
 ### Example Use
 
@@ -41,25 +41,39 @@ Create a private domain (related with a VPC) for each environment
   * region
   * domain
   * public_zone_id
-  * environments default = { "pro,pre,dev" }
+  * subdomains default = { "pro,pre,dev" }
   * vpc_ids
 
 ### Outputs
 
   * zone_ids
-  * environments_names
+  * subdomain_names
   
 ### Example Use
 
+  1 VPC (environment)
   ```
   # Define Private Domains
   module "r53_private" {
-    source = "github.com/koesystems/tf_aws_route53"
-    domain = "r53test.com"
+    source         = "github.com/koesystems/tf_aws_route53"
+    domain         = "r53test.com"
     public_zone_id = "${module.r53_public.zone_id}"
-    region = "${var.region}"
-    environments = "pro,pre,dev"
-    vpc_ids = "${format("%s,%s,%s", module.vpc01.vpc_id, module.vpc02.vpc_id, module.vpc03.vpc_id)}"
+    region         = "${var.region}"
+    subdomains     = "pro"
+    vpc_ids        = "${module.vpc01.vpc_id}"
+  }
+  ```
+  
+  3 VPC (environments)
+  ```
+  # Define Private Domains
+  module "r53_private" {
+    source         = "github.com/koesystems/tf_aws_route53"
+    domain         = "r53test.com"
+    public_zone_id = "${module.r53_public.zone_id}"
+    region         = "${var.region}"
+    subdomains     = "pro,pre,dev"
+    vpc_ids        = "${format("%s,%s,%s", module.vpc01.vpc_id, module.vpc02.vpc_id, module.vpc03.vpc_id)}"
   }
   ```
 
