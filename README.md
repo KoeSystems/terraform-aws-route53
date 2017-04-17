@@ -1,82 +1,40 @@
-# tf_aws_route53 [WIP]
+Route53 terraform module
+========================
 
-## Module to create DNS structure on Route53.
+A terraform module to create hosted zone with AWS Route53.
 
-This terraform module will create the DNS structure you need.
-The module has several submodules, so you can choose the DNS architecture you need.
+Module Input Variables
+----------------------
 
-This module is [WIP].
+- `domain_name`
 
-## Public Domain
+Usage examples
+-----
 
-Create a DNS domain in R53 as public hosted zone with serveral subdomain for each environment.
-
-### Inputs
-
-  * domain
-  * subdomains  default = { "pre,dev" }
-  
-### Outputs
-
-  * zone_id
-  * subdomain_zone_ids
-  * subdomain_names
-  
-### Example Use
-
-```
-# Define Public Domains
-module "r53_public" {
-  source = "github.com/koesystems/tf_aws_route53"
-  domain = "r53test.com"
+```js
+module "r53" {
+  source  = "github.com/KoeSystems/tf_aws_route53"
+  domain_name = "domain.localdomain"
 }
 ```
-  
-## Private Domain
 
-Create a private domain (related with a VPC) for each environment
+Outputs
+=======
 
-### Inputs
+- `domain_name`
+- `primary_public_zone_id`
 
-  * region
-  * domain
-  * public_zone_id
-  * subdomains default = { "pro,pre,dev" }
-  * vpc_ids
+Costs
+=====
 
-### Outputs
+This module will create 1 public hosted zones in AWS Route53.
 
-  * zone_ids
-  * subdomain_names
-  
-### Example Use
+Authors
+=======
 
-  1 VPC (environment)
-  ```
-  # Define Private Domains
-  module "r53_private" {
-    source         = "github.com/koesystems/tf_aws_route53"
-    domain         = "r53test.com"
-    public_zone_id = "${module.r53_public.zone_id}"
-    region         = "${var.region}"
-    subdomains     = "pro"
-    vpc_ids        = "${module.vpc01.vpc_id}"
-  }
-  ```
-  
-  3 VPC (environments)
-  ```
-  # Define Private Domains
-  module "r53_private" {
-    source         = "github.com/koesystems/tf_aws_route53"
-    domain         = "r53test.com"
-    public_zone_id = "${module.r53_public.zone_id}"
-    region         = "${var.region}"
-    subdomains     = "pro,pre,dev"
-    vpc_ids        = "${format("%s,%s,%s", module.vpc01.vpc_id, module.vpc02.vpc_id, module.vpc03.vpc_id)}"
-  }
-  ```
+Originally created and maintained by [Koe](https://github.com/KoeSystems)
 
-# LICENSE
+License
+=======
 
-Apache2, see the included LICENSE file for more information.
+MIT License. See LICENSE for full details.
