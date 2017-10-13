@@ -1,1 +1,1 @@
-variable "domain_name" { }
+variable "domain_name" { description = "Route53 Domain Name" }
